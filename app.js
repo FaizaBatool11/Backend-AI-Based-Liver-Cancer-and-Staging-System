@@ -5,6 +5,9 @@ import express from "express";
 import cors from "cors";
 import db from "./models/index.js";
 import authRoutes from "./routes/authRoutes.js";
+import patientRoutes from "./routes/patientRoutes.js";
+import clinicalRoutes from "./routes/clinicalRoutes.js";
+import imagingRoutes from "./routes/imagingRoutes.js";
 
 const app = express();
 
@@ -16,6 +19,9 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/patients", patientRoutes);
+app.use("/api/clinical", clinicalRoutes);
+app.use("/api/imaging", imagingRoutes);
 
 // Test DB connection
 (async () => {

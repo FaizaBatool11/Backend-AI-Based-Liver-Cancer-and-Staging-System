@@ -9,6 +9,10 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Patient, {
+        foreignKey: 'doctor_id',
+        as: 'patients',
+      });
     }
   }
 
@@ -31,7 +35,7 @@ export default (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
-      tableName: "Users", // optional: ensures correct table mapping
+      tableName: "users", // optional: ensures correct table mapping
     }
   );
 
