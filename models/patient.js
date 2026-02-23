@@ -12,7 +12,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: "patient_id",
         as: "clinical",
       });
-            Patient.hasMany(models.ImagingData, {
+      Patient.hasMany(models.ImagingData, {
         foreignKey: "patient_id",
         as: "imaging",
       });
