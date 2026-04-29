@@ -1,129 +1,124 @@
+// import db from "../models/index.js";
+
+// const { ImagingData } = db;
+
+// export const uploadImage = async (req, res) => {
+//   try {
+//     // ✅ File check
+//     if (!req.file) {
+//       return res.status(400).json({
+//         message: "No file uploaded",
+//       });
+//     }
+
+//     // ✅ Get body data
+//     const { patient_id, image_type } = req.body;
+
+//     if (!patient_id || !image_type) {
+//       return res.status(400).json({
+//         message: "patient_id and image_type are required",
+//       });
+//     }
+
+//     // ✅ Convert patient_id to number
+//     const patientId = parseInt(patient_id);
+
+//     // ✅ Cloudinary URL
+//     const imageUrl = req.file.path;
+
+//     // ✅ Save in DB
+//     const newImage = await ImagingData.create({
+//       patient_id: patientId,
+//       image_type,
+//       image_url: imageUrl,
+//     });
+
+//     res.status(201).json({
+//       message: "Image uploaded & saved successfully",
+//       data: newImage,
+//     });
+
+//   } catch (error) {
+//     console.error("Upload Error:", error);
+
+//     res.status(500).json({
+//       message: "Server Error",
+//       error: error.message,
+//     });
+//   }
+// };
+
 import db from "../models/index.js";
-const { ImagingData, Patient } = db;
-import multer from "multer";
-import path from "path";
 
-// -------------------- Multer Storage --------------------
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // make sure this folder exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique filename
-  },
-});
-export const upload = multer({ storage });
+const { ImagingData } = db;
 
-// -------------------- CREATE Imaging Data --------------------
-export const createImagingData = async (req, res) => {
+export const uploadImage = async (req, res) => {
   try {
-    const { patient_id, scan_type, tumor_size, tumor_stage, vascular_invasion, metastasis, scan_date } = req.body;
-    const image_path = req.file ? req.file.path : null;
+    // ✅ File check
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No file uploaded",
+      });
+    }
 
-    if (!patient_id) return res.status(400).json({ message: "patient_id is required" });
+    // ✅ Body data
+    const { patient_id, scan_type } = req.body;
 
-    const imaging = await ImagingData.create({
-      patient_id,
-      scan_type,
-      image_path,
-      tumor_size,
-      tumor_stage,
-      vascular_invasion,
-      metastasis,
-      scan_date,
+    // ✅ Validation
+    if (!patient_id || !scan_type) {
+      return res.status(400).json({
+        message: "patient_id and scan_type are required",
+      });
+    }
+
+    // ✅ Convert patient_id
+    const patientId = Number(patient_id);
+
+    // safety check
+    if (isNaN(patientId)) {
+      return res.status(400).json({
+        message: "Invalid patient_id",
+      });
+    }
+
+    // ✅ Cloudinary URL
+    const imageUrl = req.file.path;
+
+    // optional public_id (safe handling)
+    const publicId = req.file.filename || null;
+
+    // ✅ Save in DB
+    const newImage = await ImagingData.create({
+      patient_id: patientId,
+      scan_type,        // 🔥 FIXED
+      image_url: imageUrl,
+      public_id: publicId,
     });
 
-    const imagingWithPatient = await ImagingData.findOne({
-      where: { id: imaging.id },
-      include: [{ model: Patient, as: "patient" }],
+    return res.status(201).json({
+      message: "Image uploaded & saved successfully",
+      data: newImage,
     });
 
-    res.status(201).json({
-      message: "Imaging data created successfully",
-      imaging: imagingWithPatient,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+  // } catch (error) {
+  //   console.error("Upload Error:", error);
 
-// -------------------- GET ALL Imaging Data --------------------
-export const getAllImagingData = async (req, res) => {
-  try {
-    const imagingList = await ImagingData.findAll({
-      include: [{ model: Patient, as: "patient" }],
-    });
-    res.status(200).json(imagingList);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+  //   return res.status(500).json({
+  //     message: "Server Error",
+  //     error: error.message,
+  //   });
+  // }
 
-// -------------------- GET Imaging Data BY ID --------------------
-export const getImagingDataById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const imaging = await ImagingData.findOne({
-      where: { id },
-      include: [{ model: Patient, as: "patient" }],
-    });
-    if (!imaging) return res.status(404).json({ message: "Imaging data not found" });
+  }catch (error) {
+  console.log("❌ ERROR OBJECT:");
+  console.dir(error, { depth: null });
 
-    res.status(200).json(imaging);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+  console.log("❌ MESSAGE:", error.message);
+  console.log("❌ STACK:", error.stack);
 
-// -------------------- UPDATE Imaging Data --------------------
-export const updateImagingData = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { scan_type, tumor_size, tumor_stage, vascular_invasion, metastasis, scan_date } = req.body;
-    const image_path = req.file ? req.file.path : null;
-
-    const imaging = await ImagingData.findByPk(id);
-    if (!imaging) return res.status(404).json({ message: "Imaging data not found" });
-
-    await imaging.update({
-      scan_type: scan_type || imaging.scan_type,
-      tumor_size: tumor_size || imaging.tumor_size,
-      tumor_stage: tumor_stage || imaging.tumor_stage,
-      vascular_invasion: vascular_invasion || imaging.vascular_invasion,
-      metastasis: metastasis || imaging.metastasis,
-      scan_date: scan_date || imaging.scan_date,
-      image_path: image_path || imaging.image_path,
-    });
-
-    const updatedImaging = await ImagingData.findOne({
-      where: { id },
-      include: [{ model: Patient, as: "patient" }],
-    });
-
-    res.status(200).json({
-      message: "Imaging data updated successfully",
-      imaging: updatedImaging,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// -------------------- DELETE Imaging Data --------------------
-export const deleteImagingData = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const imaging = await ImagingData.findByPk(id);
-    if (!imaging) return res.status(404).json({ message: "Imaging data not found" });
-
-    await imaging.destroy();
-    res.status(200).json({ message: "Imaging data deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
+  return res.status(500).json({
+    message: "Server Error",
+    error: error.message,
+  });
+}
 };

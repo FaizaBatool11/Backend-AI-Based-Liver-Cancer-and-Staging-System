@@ -1,21 +1,17 @@
 import db from "../models/index.js";
 
-const { Patient, User } = db;
+const { Patient } = db;
 
 /**
- * CREATE Patient
- * Doctor creates a new patient
+ * CREATE Patient (AUTH REQUIRED)
  */
 export const createPatient = async (req, res) => {
-  console.log("DB:", db);
-console.log("Patient:", db.Patient);
-
   try {
-    // Doctor ID comes from frontend temporarily
-    const { doctor_id, name, email, contact, gender, age } = req.body;
+    const doctor_id = req.user.id; // 🔐 from JWT token
+    const { name, email, contact } = req.body;
 
-    if (!doctor_id || !name) {
-      return res.status(400).json({ message: "Doctor ID and patient name are required" });
+    if (!name) {
+      return res.status(400).json({ message: "Patient name is required" });
     }
 
     const patient = await Patient.create({
@@ -23,8 +19,6 @@ console.log("Patient:", db.Patient);
       name,
       email,
       contact,
-      gender,
-      age,
     });
 
     return res.status(201).json({
@@ -38,15 +32,11 @@ console.log("Patient:", db.Patient);
 };
 
 /**
- * GET All Patients (Doctor-wise)
+ * GET ALL Patients (AUTH REQUIRED)
  */
 export const getPatients = async (req, res) => {
   try {
-    const { doctor_id } = req.query;
-
-    if (!doctor_id) {
-      return res.status(400).json({ message: "doctor_id is required" });
-    }
+    const doctor_id = req.user.id;
 
     const patients = await Patient.findAll({
       where: { doctor_id },
@@ -61,19 +51,18 @@ export const getPatients = async (req, res) => {
 };
 
 /**
- * GET Single Patient Detail
+ * GET Single Patient (AUTH REQUIRED)
  */
 export const getPatientById = async (req, res) => {
   try {
+    const doctor_id = req.user.id;
     const { id } = req.params;
-    const { doctor_id } = req.query;
 
     const patient = await Patient.findOne({
-      where: { id, doctor_id },
-      // include: [
-      //   { association: "clinical" },
-      //   { association: "imaging" },
-      // ],
+      where: {
+        id,
+        doctor_id,
+      },
     });
 
     if (!patient) {
@@ -88,12 +77,12 @@ export const getPatientById = async (req, res) => {
 };
 
 /**
- * UPDATE Patient
+ * UPDATE Patient (AUTH REQUIRED)
  */
 export const updatePatient = async (req, res) => {
   try {
+    const doctor_id = req.user.id;
     const { id } = req.params;
-    const { doctor_id } = req.body;
 
     const patient = await Patient.findOne({
       where: { id, doctor_id },
@@ -116,12 +105,12 @@ export const updatePatient = async (req, res) => {
 };
 
 /**
- * DELETE Patient
+ * DELETE Patient (AUTH REQUIRED)
  */
 export const deletePatient = async (req, res) => {
   try {
+    const doctor_id = req.user.id;
     const { id } = req.params;
-    const { doctor_id } = req.query;
 
     const patient = await Patient.findOne({
       where: { id, doctor_id },
@@ -141,4 +130,3 @@ export const deletePatient = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-

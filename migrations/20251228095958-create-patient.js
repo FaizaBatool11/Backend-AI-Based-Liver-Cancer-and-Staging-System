@@ -1,6 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable("Patients", {
+  await queryInterface.createTable("patients", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -12,7 +12,7 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "Users", // must match Users table
+        model: "users", // must match Users table
         key: "id",
       },
       onUpdate: "CASCADE",
@@ -32,14 +32,6 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.STRING,
     },
 
-    gender: {
-      type: Sequelize.STRING,
-    },
-
-    age: {
-      type: Sequelize.INTEGER,
-    },
-
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -55,5 +47,5 @@ export async function up(queryInterface, Sequelize) {
 }
 
 export async function down(queryInterface) {
-  await queryInterface.dropTable("Patients");
+  await queryInterface.dropTable("patients");
 }

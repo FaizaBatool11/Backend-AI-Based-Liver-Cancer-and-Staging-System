@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Prediction",
-      tableName: "Predictions",
+      tableName: "predictions",
     }
   );
 

@@ -1,6 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable("ImagingData", {
+  await queryInterface.createTable("imaging_data", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -12,7 +12,7 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "Patients",
+        model: "patients",
         key: "id",
       },
       onDelete: "CASCADE",
@@ -20,25 +20,19 @@ export async function up(queryInterface, Sequelize) {
     },
 
     scan_type: {
-      type: Sequelize.STRING, // CT / MRI
-      allowNull: false,
+      type: Sequelize.STRING,
+      allowNull: false, // CT / MRI
     },
 
-    image_path: {
+    image_url: {
       type: Sequelize.STRING,
       allowNull: false,
     },
 
-    image_format: {
+    public_id: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
-
-    tumor_size: Sequelize.FLOAT,
-    tumor_stage: Sequelize.STRING,
-    vascular_invasion: Sequelize.BOOLEAN,
-    metastasis: Sequelize.BOOLEAN,
-
-    scan_date: Sequelize.DATE,
 
     createdAt: {
       allowNull: false,

@@ -2,22 +2,24 @@ import express from "express";
 import {
   createClinicalData,
   getClinicalData,
+  getAllClinicalData,
   updateClinicalData,
   deleteClinicalData,
 } from "../Controllers/clinicalController.js";
 
+import { authMiddleware } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-// Create clinical data
-router.post("/", createClinicalData);
+// 🔐 All routes protected
+router.post("/", authMiddleware, createClinicalData);
 
-// Get clinical data for a patient
-router.get("/:patient_id", getClinicalData);
+router.get("/:patient_id", authMiddleware, getClinicalData);
 
-// Update clinical data for a patient
-router.put("/:patient_id", updateClinicalData);
+router.get("/", authMiddleware, getAllClinicalData);
 
-// Delete clinical data for a patient
-router.delete("/:patient_id", deleteClinicalData);
+router.put("/:patient_id", authMiddleware, updateClinicalData);
+
+router.delete("/:patient_id", authMiddleware, deleteClinicalData);
 
 export default router;

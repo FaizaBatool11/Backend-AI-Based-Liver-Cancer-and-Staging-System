@@ -7,19 +7,23 @@ import {
   deletePrediction,
 } from "../Controllers/predictionController.js";
 
+import { authMiddleware } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
+// 🔐 ALL ROUTES PROTECTED
+
 // CREATE
-router.post("/", createPrediction);
+router.post("/", authMiddleware, createPrediction);
 
 // READ
-router.get("/", getAllPredictions);
-router.get("/:id", getPredictionById);
+router.get("/", authMiddleware, getAllPredictions);
+router.get("/:id", authMiddleware, getPredictionById);
 
 // UPDATE
-router.put("/:id", updatePrediction);
+router.put("/:id", authMiddleware, updatePrediction);
 
 // DELETE
-router.delete("/:id", deletePrediction);
+router.delete("/:id", authMiddleware, deletePrediction);
 
 export default router;

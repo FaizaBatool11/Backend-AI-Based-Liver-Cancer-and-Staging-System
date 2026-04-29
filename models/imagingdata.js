@@ -16,19 +16,27 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      scan_type: DataTypes.STRING,
-      image_path: DataTypes.STRING,
-      image_format: DataTypes.STRING,
-      tumor_size: DataTypes.FLOAT,
-      tumor_stage: DataTypes.STRING,
-      vascular_invasion: DataTypes.BOOLEAN,
-      metastasis: DataTypes.BOOLEAN,
-      scan_date: DataTypes.DATE,
+
+      scan_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      image_url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      public_id: {
+        type: DataTypes.STRING,
+        allowNull: true, // ✅ FIXED
+      },
     },
     {
       sequelize,
       modelName: "ImagingData",
-      tableName: "ImagingData",
+      tableName: "imaging_data",
+      timestamps: true, // ✅ handles createdAt + updatedAt automatically
     }
   );
 

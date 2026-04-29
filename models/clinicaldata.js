@@ -16,20 +16,48 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      age_at_index: DataTypes.INTEGER,
-      bmi: DataTypes.FLOAT,
-      tumor_nodul: DataTypes.INTEGER,
-      hepatitis: DataTypes.BOOLEAN,
-      afp: DataTypes.FLOAT,
-      afp_group: DataTypes.INTEGER,
-      alk: DataTypes.FLOAT,
-      days_to_last_follow_up: DataTypes.INTEGER,
-      metastasis: DataTypes.BOOLEAN,
+
+      age: {
+        type: DataTypes.INTEGER,
+      },
+
+      gender: {
+        type: DataTypes.STRING,
+      },
+
+      race: {
+        type: DataTypes.STRING,
+      },
+
+      ethnicity: {
+        type: DataTypes.STRING,
+      },
+
+      vital_status: {
+        type: DataTypes.STRING,
+      },
+
+      days_to_birth: {
+        type: DataTypes.INTEGER,
+      },
+
+      primary_diagnosis: {
+        type: DataTypes.STRING,
+      },
+
+      morphology: {
+        type: DataTypes.STRING,
+      },
+
+      prior_malignancy: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,
       modelName: "ClinicalData",
-      tableName: "ClinicalData",
+      tableName: "clinical_data",
+      timestamps: true,
     }
   );
 

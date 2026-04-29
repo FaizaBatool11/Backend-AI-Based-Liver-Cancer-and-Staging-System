@@ -35,8 +35,6 @@ export default (sequelize, DataTypes) => {
       },
       email: DataTypes.STRING,
       contact: DataTypes.STRING,
-      gender: DataTypes.STRING,
-      age: DataTypes.INTEGER,
     },
     {
       sequelize,

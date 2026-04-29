@@ -1,6 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable("Predictions", {
+  await queryInterface.createTable("predictions", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -12,7 +12,7 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
-        model: "Patients",
+        model: "patients",
         key: "id",
       },
       onDelete: "CASCADE",

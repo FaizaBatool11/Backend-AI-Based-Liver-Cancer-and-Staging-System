@@ -1,6 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable("clinical_data", {
+  await queryInterface.createTable("imaging_data", {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -19,40 +19,19 @@ export async function up(queryInterface, Sequelize) {
       onUpdate: "CASCADE",
     },
 
-    age: {
-      type: Sequelize.INTEGER,
-    },
-
-    gender: {
+    scan_type: {
       type: Sequelize.STRING,
+      allowNull: false, // CT / MRI
     },
 
-    race: {
+    image_url: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
 
-    ethnicity: {
+    public_id: {
       type: Sequelize.STRING,
-    },
-
-    vital_status: {
-      type: Sequelize.STRING, // Alive / Dead
-    },
-
-    days_to_birth: {
-      type: Sequelize.INTEGER,
-    },
-
-    primary_diagnosis: {
-      type: Sequelize.STRING,
-    },
-
-    morphology: {
-      type: Sequelize.STRING,
-    },
-
-    prior_malignancy: {
-      type: Sequelize.BOOLEAN,
+      allowNull: true, // ✅ FIXED (Cloudinary sometimes optional)
     },
 
     createdAt: {
@@ -70,5 +49,5 @@ export async function up(queryInterface, Sequelize) {
 }
 
 export async function down(queryInterface) {
-  await queryInterface.dropTable("clinical_data");
+  await queryInterface.dropTable("imaging_data"); // ✅ FIXED
 }

@@ -8,6 +8,19 @@ import authRoutes from "./routes/authRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
 import clinicalRoutes from "./routes/clinicalRoutes.js";
 import imagingRoutes from "./routes/imagingRoutes.js";
+import predictionRoutes from "./routes/predictionRoutes.js";
+import fullPatientRoutes from "./routes/fullPatientRoutes.js";
+
+
+// ✅ YAHAN LAGAO (IMPORTANT)
+process.on("uncaughtException", (err) => {
+  console.error("💥 UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("💥 UNHANDLED REJECTION:", err);
+});
+
 
 const app = express();
 
@@ -22,6 +35,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/clinical", clinicalRoutes);
 app.use("/api/imaging", imagingRoutes);
+app.use("/api/predictions",predictionRoutes);
+app.use("/api/patients", fullPatientRoutes);
 
 // Test DB connection
 (async () => {
