@@ -19,41 +19,15 @@ export async function up(queryInterface, Sequelize) {
       onUpdate: "CASCADE",
     },
 
-    age: {
-      type: Sequelize.INTEGER,
-    },
+    // 🔥 NEW FIELDS
+    ajcc_pathologic_t: Sequelize.STRING,
+    ajcc_staging_system_edition: Sequelize.STRING,
+    ajcc_pathologic_m: Sequelize.STRING,
+    ajcc_pathologic_n: Sequelize.STRING,
 
-    gender: {
-      type: Sequelize.STRING,
-    },
-
-    race: {
-      type: Sequelize.STRING,
-    },
-
-    ethnicity: {
-      type: Sequelize.STRING,
-    },
-
-    vital_status: {
-      type: Sequelize.STRING, // Alive / Dead
-    },
-
-    days_to_birth: {
-      type: Sequelize.INTEGER,
-    },
-
-    primary_diagnosis: {
-      type: Sequelize.STRING,
-    },
-
-    morphology: {
-      type: Sequelize.STRING,
-    },
-
-    prior_malignancy: {
-      type: Sequelize.BOOLEAN,
-    },
+    days_to_last_follow_up: Sequelize.INTEGER,
+    tumor_grade: Sequelize.STRING,
+    ishak_fibrosis_score: Sequelize.STRING,
 
     createdAt: {
       allowNull: false,

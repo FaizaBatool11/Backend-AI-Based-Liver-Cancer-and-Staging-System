@@ -12,46 +12,14 @@ export default (sequelize, DataTypes) => {
 
   ClinicalData.init(
     {
-      patient_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-
-      age: {
-        type: DataTypes.INTEGER,
-      },
-
-      gender: {
-        type: DataTypes.STRING,
-      },
-
-      race: {
-        type: DataTypes.STRING,
-      },
-
-      ethnicity: {
-        type: DataTypes.STRING,
-      },
-
-      vital_status: {
-        type: DataTypes.STRING,
-      },
-
-      days_to_birth: {
-        type: DataTypes.INTEGER,
-      },
-
-      primary_diagnosis: {
-        type: DataTypes.STRING,
-      },
-
-      morphology: {
-        type: DataTypes.STRING,
-      },
-
-      prior_malignancy: {
-        type: DataTypes.BOOLEAN,
-      },
+      // NEW
+      ajcc_pathologic_t: DataTypes.STRING,
+      ajcc_staging_system_edition: DataTypes.STRING,
+      ajcc_pathologic_m: DataTypes.STRING,
+      ajcc_pathologic_n: DataTypes.STRING,
+      days_to_last_follow_up: DataTypes.INTEGER,
+      tumor_grade: DataTypes.STRING,
+      ishak_fibrosis_score: DataTypes.STRING,
     },
     {
       sequelize,

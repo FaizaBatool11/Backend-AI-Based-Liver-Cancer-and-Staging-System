@@ -32,6 +32,16 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.STRING,
     },
 
+    age: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+
+    gender: {
+      type: Sequelize.ENUM("male", "female", "other"),
+      allowNull: false,
+    },
+
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

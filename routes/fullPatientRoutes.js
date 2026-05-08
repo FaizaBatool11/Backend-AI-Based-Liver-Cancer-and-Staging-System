@@ -9,7 +9,10 @@ const router = express.Router(); // ✅ MISSING LINE FIXED
 router.post(
   "/full",
   authMiddleware,
-  upload.single("image"), // image field name
+  upload.fields([
+    { name: "ct_scans", maxCount: 20 },
+    { name: "mri_scans", maxCount: 20 },
+  ]),
   createFullPatient
 );
 

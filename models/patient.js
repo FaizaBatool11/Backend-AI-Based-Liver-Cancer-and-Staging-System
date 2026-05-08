@@ -35,7 +35,17 @@ export default (sequelize, DataTypes) => {
       },
       email: DataTypes.STRING,
       contact: DataTypes.STRING,
+      
+      age: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
+
+    gender: {
+      type: DataTypes.ENUM("male", "female", "other"),
+      allowNull: false,
+    },
+   },
     {
       sequelize,
       modelName: "Patient",
