@@ -185,30 +185,6 @@ export const uploadImage = async (req, res) => {
       }
     }
 
-    /**
-     * =========================
-     * MRI SCANS
-     * =========================
-     */
-    if (req.files.mri_scans) {
-
-      for (const file of req.files.mri_scans) {
-
-        const newImage = await ImagingData.create({
-
-          patient_id: patientId,
-
-          scan_type: "MRI",
-
-          image_url: file.path,
-
-          public_id: file.filename || null,
-        });
-
-        savedImages.push(newImage);
-      }
-    }
-
     return res.status(201).json({
       message: "Images uploaded successfully",
       total_uploaded: savedImages.length,
@@ -288,28 +264,28 @@ export const getCTImages = async (req, res) => {
 /**
  * GET ONLY MRI IMAGES
  */
-export const getMRIImages = async (req, res) => {
-  try {
+// export const getMRIImages = async (req, res) => {
+//   try {
 
-    const { patient_id } = req.params;
+//     const { patient_id } = req.params;
 
-    const images = await ImagingData.findAll({
-      where: {
-        patient_id,
-        scan_type: "MRI",
-      },
-    });
+//     const images = await ImagingData.findAll({
+//       where: {
+//         patient_id,
+//         scan_type: "MRI",
+//       },
+//     });
 
-    return res.status(200).json({
-      total: images.length,
-      data: images,
-    });
+//     return res.status(200).json({
+//       total: images.length,
+//       data: images,
+//     });
 
-  } catch (error) {
+//   } catch (error) {
 
-    return res.status(500).json({
-      message: "Server Error",
-      error: error.message,
-    });
-  }
-};
+//     return res.status(500).json({
+//       message: "Server Error",
+//       error: error.message,
+//     });
+//   }
+// };

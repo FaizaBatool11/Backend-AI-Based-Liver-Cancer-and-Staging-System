@@ -71,6 +71,7 @@ import PatientModel from "./patient.js";
 import ClinicalDataModel from "./clinicaldata.js";
 import ImagingDataModel from "./imagingdata.js"; // ✅ import correctly
 import PredictionModel from "./prediction.js"; // ✅ import
+import ReportModel from "./report.js"; // ✅ ADDED
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -94,10 +95,19 @@ db.Patient = PatientModel(sequelize, Sequelize.DataTypes);
 db.ClinicalData = ClinicalDataModel(sequelize, Sequelize.DataTypes);
 db.ImagingData = ImagingDataModel(sequelize, Sequelize.DataTypes); // ✅ initialize
 db.Prediction = PredictionModel(sequelize, Sequelize.DataTypes); // ✅ initialize
+db.Report = ReportModel(sequelize, Sequelize.DataTypes); // ✅ ADDED
 
 // Run associations **after all models are initialized**
-Object.values(db).forEach((model) => {
-  if (model.associate) model.associate(db);
+Object.keys(db).forEach((modelName) => {
+  const model = db[modelName];
+
+  if (
+    model &&
+    model.prototype instanceof Sequelize.Model &&
+    model.associate
+  ) {
+    model.associate(db);
+  }
 });
 
 export default db;

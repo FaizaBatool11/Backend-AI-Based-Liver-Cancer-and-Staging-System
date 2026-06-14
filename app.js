@@ -10,6 +10,7 @@ import clinicalRoutes from "./routes/clinicalRoutes.js";
 import imagingRoutes from "./routes/imagingRoutes.js";
 import predictionRoutes from "./routes/predictionRoutes.js";
 import fullPatientRoutes from "./routes/fullPatientRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
 
 
 // ✅ YAHAN LAGAO (IMPORTANT)
@@ -31,12 +32,18 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// ✅ ADD THIS (IMPORTANT)
+import path from "path";
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
 app.use("/api/auth", authRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/clinical", clinicalRoutes);
 app.use("/api/imaging", imagingRoutes);
 app.use("/api/predictions",predictionRoutes);
 app.use("/api/patients", fullPatientRoutes);
+app.use("/api/report" , reportRoutes);
 
 // Test DB connection
 (async () => {

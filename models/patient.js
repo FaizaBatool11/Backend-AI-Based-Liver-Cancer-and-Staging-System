@@ -20,6 +20,10 @@ export default (sequelize, DataTypes) => {
         foreignKey: "patient_id",
         as: "predictions",
       });
+      Patient.hasMany(models.Report, {
+        foreignKey: "patient_id",
+        as: "reports",
+      });
     }
   }
 
